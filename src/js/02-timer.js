@@ -46,38 +46,36 @@ flatpickr(datetimePicker, {
   },
 });
 
-// startButton.addEventListener('click', () => {
-//   const selectedDate = flatpickr.parseDate(datetimePicker.value);
-//   const currentDate = new Date();
-//   const timeDifference = selectedDate.getTime() - currentDate.getTime();
+startBtn.addEventListener('click', () =>{
+  const selectedDate = flatpickr.parseDate(datetimePicker.value);
+  const currentDate = new Date();
+  const differenceTime = selectedDate.getTime() - currentDate.getTime();
+  
+  if(differenceTime <= 0) {
+    Notiflix.Notify.failure("Please choose a date in the future");
+    return;
+  }
+  startBtn.disabled = true;
 
-//   if (timeDifference <= 0) {
-//     Notiflix.Notify.failure("Please choose a date in the future");
-//     return;
-//   }
+  countInterval = setInterval(() => {
+    const currentTime = new Date().getTime();
+    const remTime = selectedDate.getTime() - currentTime;
 
-//   startButton.disabled = true;
+    if(remTime <= 0){
+      clearInterval(countInterval);
+      daysEl.textContent = "00";
+      hoursEl.textContent = "00";
+      minutesEl.textContent = "00";
+      secondsEl.textContent = "00";
+      Notiflix.Notify.success("CountDown Comleted!");
+      startBtn.disabled = false;
+      return;
+    }
+    const {days, hours, minutes, seconds } = convertMs(remTime);
 
-//   countdownInterval = setInterval(() => {
-//     const currentTime = new Date().getTime();
-//     const remainingTime = selectedDate.getTime() - currentTime;
-
-//     if (remainingTime <= 0) {
-//       clearInterval(countdownInterval);
-//       daysValue.textContent = "00";
-//       hoursValue.textContent = "00";
-//       minutesValue.textContent = "00";
-//       secondsValue.textContent = "00";
-//       Notiflix.Notify.success("Countdown completed!");
-//       startButton.disabled = false;
-//       return;
-//     }
-
-//     const { days, hours, minutes, seconds } = convertMs(remainingTime);
-
-//     daysValue.textContent = addLeadingZero(days);
-//     hoursValue.textContent = addLeadingZero(hours);
-//     minutesValue.textContent = addLeadingZero(minutes);
-//     secondsValue.textContent = addLeadingZero(seconds);
-//   }, 1000);
-// });
+    daysEl.textContent = addLeadingZero(days);
+    hoursEl.textContent = addLeadingZero(hours);
+    minutesEl.textContent = addLeadingZero(minutes);
+    secondsEl.textContent = addLeadingZero(seconds);
+  }, 1000);
+});
