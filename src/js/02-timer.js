@@ -20,7 +20,7 @@ function addLeadZero(value){
   return value.toString().padStart(2, "0");
 }
 
-const datetimePicker = document.querySelectorById("datetime-picker");
+const datetimePicker = document.getElementById("datetime-picker");
 const startBtn = document.querySelector('[data-start]');
 const daysEl = document.querySelector('[data-days]');
 const hoursEl = document.querySelector('[data-hours]');
