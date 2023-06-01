@@ -2,7 +2,7 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import Notiflix from "notiflix";
 
-function convertMs(ms){
+function convertMs(ms) {
   const second = 1000;
   const minute = second * 60;
   const hour = minute * 60;
@@ -10,14 +10,14 @@ function convertMs(ms){
 
   const days = Math.floor(ms / day);
   const hours = Math.floor((ms % day) / hour);
-  const minutes = Math.floor(((ms % day) % hour) % minute);
+  const minutes = Math.floor(((ms % day) % hour) / minute);
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
 }
 
-function addZeroLead(value){
-  return value.toString().padStart(2, 0);
+function addLeadZero(value){
+  return value.toString().padStart(2, "0");
 }
 
 const datetimePicker = document.querySelectorById("datetime-picker");
@@ -38,7 +38,7 @@ flatpickr(datetimePicker, {
     const selectedDate = selectedDates[0];
 
     if (selectedDate < new Date()) {
-        Notiflix.Notify.failure("Please choose a date in the future");
+      Notiflix.Notify.failure("Please choose a date in the future");
       startBtn.disabled = true;
     } else {
       startBtn.disabled = false;
@@ -46,15 +46,16 @@ flatpickr(datetimePicker, {
   },
 });
 
-startBtn.addEventListener('click', () =>{
+startBtn.addEventListener('click', () => {
   const selectedDate = flatpickr.parseDate(datetimePicker.value);
   const currentDate = new Date();
-  const differenceTime = selectedDate.getTime() - currentDate.getTime();
+  const diffTime = selectedDate.getTime() - currentDate.getTime();
   
-  if(differenceTime <= 0) {
+  if(diffTime <= 0) {
     Notiflix.Notify.failure("Please choose a date in the future");
     return;
   }
+
   startBtn.disabled = true;
 
   countInterval = setInterval(() => {
@@ -71,11 +72,11 @@ startBtn.addEventListener('click', () =>{
       startBtn.disabled = false;
       return;
     }
-    const {days, hours, minutes, seconds } = convertMs(remTime);
+    const { days, hours, minutes, seconds } = convertMs(remTime);
 
-    daysEl.textContent = addLeadingZero(days);
-    hoursEl.textContent = addLeadingZero(hours);
-    minutesEl.textContent = addLeadingZero(minutes);
-    secondsEl.textContent = addLeadingZero(seconds);
+    daysEl.textContent = addLeadZero(days);
+    hoursEl.textContent = addLeadZero(hours);
+    minutesEl.textContent = addLeadZero(minutes);
+    secondsEl.textContent = addLeadZero(seconds);
   }, 1000);
 });
