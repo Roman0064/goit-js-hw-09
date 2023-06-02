@@ -51,7 +51,7 @@ startBtn.addEventListener('click', () => {
   const currentDate = new Date();
   const diffTime = selectedDate.getTime() - currentDate.getTime();
   
-  if(diffTime <= 0) {
+  if (diffTime <= 0) {
     Notiflix.Notify.failure("Please choose a date in the future");
     return;
   }
