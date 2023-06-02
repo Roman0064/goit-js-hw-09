@@ -24,8 +24,6 @@ document.querySelector('.form').addEventListener('submit', function (event) {
     const step = Number(stepInput.value);
     const amount = Number(amountInput.value);
 
-    const promises = [];
-
     for(let i = 0; i < amount; i++) {
         const position = i + 1;
         const promise = createPromise(position, delay + i * step);
@@ -37,8 +35,6 @@ document.querySelector('.form').addEventListener('submit', function (event) {
             .catch(({ position, delay }) => {
                 Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
             });
-
-        promises.push(promise);
     }
     
     this.reset();
