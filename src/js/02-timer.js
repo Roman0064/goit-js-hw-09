@@ -20,7 +20,7 @@ function addLeadZero(value){
   return value.toString().padStart(2, "0");
 }
 
-const datetimePicker = document.getElementById("datetime-picker");
+const dateTimePicker = document.getElementById("datetime-picker");
 const startBtn = document.querySelector('[data-start]');
 const daysEl = document.querySelector('[data-days]');
 const hoursEl = document.querySelector('[data-hours]');
@@ -28,14 +28,15 @@ const minutesEl = document.querySelector('[data-minutes]');
 const secondsEl = document.querySelector('[data-seconds]');
 
 let countInterval;
+let selectedDate;
 
-flatpickr(datetimePicker, {
+flatpickr(dateTimePicker, {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    const selectedDate = selectedDates[0];
+    selectedDate = selectedDates[0];
 
     if (selectedDate < new Date()) {
       Notiflix.Notify.failure("Please choose a date in the future");
@@ -47,9 +48,9 @@ flatpickr(datetimePicker, {
 });
 
 startBtn.addEventListener('click', () => {
-  const selectedDate = flatpickr.parseDate(datetimePicker.value);
   const currentDate = new Date();
   const diffTime = selectedDate.getTime() - currentDate.getTime();
+  
   
   if (diffTime <= 0) {
     Notiflix.Notify.failure("Please choose a date in the future");
